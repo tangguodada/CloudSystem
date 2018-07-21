@@ -51,7 +51,8 @@
         <div class="chat-content">
         </div>
         <div class="chat-bottom">
-          <el-input v-model="ct" placeholder="输入文字消息" style="width: 50%" @keyup.enter.native="sendinfo"></el-input>
+          <el-input v-model="ct" placeholder="输入文字消息" style="width: 50%" @keyup.enter.native="sendinfo" id="saytext" name="saytext"></el-input>
+          <span class="emotion"><img class="emotion" style="height: 40px;width: 40px;cursor: pointer" src="/static/image/发表情.png"></span>
           <el-button @click="sendinfo">发送</el-button>
         </div>
       </div>
@@ -83,6 +84,7 @@
     import Pdf from "./pdf";
     import ElButton from "element-ui/packages/button/src/button";
     import '../icon/iconfont'
+    import '../../static/js/jquery.qqFace'
 
     export default {
       components: {
@@ -197,7 +199,7 @@
           let port = eval('(' + e.data + ')');
           console.log(port);
           if (port.sender == this.fdid) {
-            let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+port.content+"</div></div>";
+            let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+this.replace_em(port.content)+"</div></div>";
             $('.chat-content').append(recevmessage);
           } else {
             let result = this.unreadlist.indexOf(port.sender);
@@ -216,8 +218,8 @@
         },
 
         sendinfo(){
-          console.log(this.mysrc);
-          let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.ct+"</div></div>";
+          let content = $('#saytext').val();
+          let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.replace_em(content)+"</div></div>";
           $('.chat-content').append(chatmessage);
           this.$axios.post("/chat/send",{
             content:this.ct,
@@ -235,6 +237,7 @@
               console.log(error);
             })
           this.ct = '';
+          $('#saytext').value = '';
         },
 
         getunread(){
@@ -278,10 +281,10 @@
               console.log(res.data.data);
               for (let i=res.data.data.length-1;i>=0;i--){
                 if (res.data.data[i].sender == this.fdid){
-                  let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+res.data.data[i].content+"</div></div>";
+                  let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+this.replace_em(res.data.data[i].content)+"</div></div>";
                   $('.chat-content').append(recevmessage);
                 } else {
-                  let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+res.data.data[i].content+"</div></div>";
+                  let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.replace_em(res.data.data[i].content)+"</div></div>";
                   $('.chat-content').append(chatmessage);
                 }
               }
@@ -289,11 +292,24 @@
             .catch(function (error) {
               console.log(error);
             })
+        },
+        replace_em(str){
+
+          str = str.replace(/\</g,'&lt;');
+
+          str = str.replace(/\>/g,'&gt;');
+
+          str = str.replace(/\n/g,'<br/>');
+
+          str = str.replace(/\[em_([0-9]*)\]/g,'<img src="/static/arclist/$1.gif" border="0" />');
+
+          return str;
+
         }
 
       },
       mounted(){
-        let h=document.documentElement.clientHeight-60;
+        let h=document.documentElement.clientHeight-80;
         $("#share").css('height',h + 'px');
         this.getfriendlist();
         var menu = $('.ul-header li');
@@ -305,7 +321,11 @@
         });
         this.initWebSocket();
         this.getunread();
-
+        $('.emotion').qqFace({
+          id : 'facebox',
+          assign:'saytext',
+          path:'/static/arclist/'	//表情存放的路径
+        });
       }
     }
 </script>
