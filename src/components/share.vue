@@ -48,7 +48,7 @@
         <div class="chat-top">
           <strong>{{fdname}}</strong>
         </div>
-        <div class="chat-content">
+        <div class="chat-content" id="chatct">
         </div>
         <div class="chat-bottom">
           <el-input v-model="ct" placeholder="输入文字消息" style="width: 50%" @keyup.enter.native="sendinfo" id="saytext" name="saytext"></el-input>
@@ -58,11 +58,15 @@
       </div>
 
       <div class="rightdiv" v-show="showrightdiv">
-        <img src="/static/image/聊天记录.png" alt="" style="width: 84px;height: 80px;position: relative;top: 140px;left: 290px">
-        <div style="margin: 120px auto;width: 310px">
+        <!--<img src="/static/image/聊天记录.png" alt="" style="width: 84px;height: 80px;position: relative;top: 140px;left: 290px">-->
+        <div style="margin: 160px auto;width: 320px">
           <img src="/static/image/头像%20男孩.png" alt="" style="width: 84px;height: 80px;float: left">
-          <hr style="border : 1px dashed blue;float: left;width:124px;margin-top: 40px;margin-left: 5px" />
-          <div style="width: 0;height: 0;border-width: 5px;border-style: solid;border-color: transparent transparent transparent blue;float: left;margin-top: 36px"></div>
+          <div style="width: 150px;float: left">
+            <img src="/static/image/聊天记录.png" style="width: 84px;height: 80px;float: left;margin-top: -50px;margin-left: 23px" alt="">
+            <div style="clear: both"></div>
+          <hr style="border : 1px dashed blue;float: left;width:124px;margin-left: 5px;margin-top: 15px;" />
+          <div style="width: 0;height: 0;border-width: 5px;border-style: solid;border-color: transparent transparent transparent blue;float: left;margin-top: 11px"></div>
+          </div>
           <img src="/static/image/头像%20女孩.png" alt="" style="width: 84px;height: 80px;float: right">
           <div style="clear: both;width: 300px;height: 30px;text-align: center"></div>
           <h5 style="text-align: center">简单操作即可与好友轻松畅聊</h5>
@@ -197,7 +201,7 @@
 
         websocketonmessage:function(e){ //数据接收
           let port = eval('(' + e.data + ')');
-          console.log(port);
+          console.log(port.content);
           if (port.sender == this.fdid) {
             let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+this.replace_em(port.content)+"</div></div>";
             $('.chat-content').append(recevmessage);
@@ -207,6 +211,7 @@
               this.unreadlist.push(port.sender);
             }
           }
+          this.setbottom();
         },
 
         websocketsend:function(agentData){//数据发送
@@ -219,10 +224,11 @@
 
         sendinfo(){
           let content = $('#saytext').val();
+          console.log(content);
           let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.replace_em(content)+"</div></div>";
           $('.chat-content').append(chatmessage);
           this.$axios.post("/chat/send",{
-            content:this.ct,
+            content:content,
             receiver:this.fdid
           },{
             headers:{
@@ -238,6 +244,7 @@
             })
           this.ct = '';
           $('#saytext').value = '';
+          this.setbottom();
         },
 
         getunread(){
@@ -278,20 +285,38 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
               for (let i=res.data.data.length-1;i>=0;i--){
+                let content = res.data.data[i].content;
+                if (content.length == 0){
+                  content = '&nbsp;';
+                }
                 if (res.data.data[i].sender == this.fdid){
-                  let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+this.replace_em(res.data.data[i].content)+"</div></div>";
+                  let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+this.replace_em(content)+"</div></div>";
                   $('.chat-content').append(recevmessage);
                 } else {
-                  let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.replace_em(res.data.data[i].content)+"</div></div>";
+                  let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.replace_em(content)+"</div></div>";
                   $('.chat-content').append(chatmessage);
                 }
               }
+              this.setbottom();
             }.bind(this))
             .catch(function (error) {
               console.log(error);
             })
+
+          this.$axios.get("/chat/read/"+this.fdid,{
+            headers:{
+              'Authorization':sessionStorage.getItem('userToken'),
+              'Content-Type':'application/x-www-form-urlencoded'
+            }
+          })
+            .then(function (res) {
+              console.log(res.data.data.data);
+            }.bind(this))
+            .catch(function (error) {
+              console.log(error);
+            })
+
         },
         replace_em(str){
 
@@ -305,6 +330,11 @@
 
           return str;
 
+        },
+        setbottom(){
+          var div = document.getElementById('chatct');
+          div.innerHTML = div.innerHTML + '<br />';
+          div.scrollTop = div.scrollHeight;
         }
 
       },
@@ -413,6 +443,7 @@
   }
   .friendlist li{
     padding-left: 5px;
+    border-bottom: 1px solid #d1d1d1;
   }
   .friendlist li:hover{
     cursor: pointer;

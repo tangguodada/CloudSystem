@@ -8,7 +8,7 @@
           <el-card :body-style="{ padding: '30px' }">
             <img :src="item.icon" alt="" style="display: block;float: left">
             <span style="display: block;float: left">&#12288;{{item.username}}</span>
-            <span style="display: block;float: right;color: #00b7ee;cursor: pointer" @click="cancelconcern(item.username)">取关TA</span>
+            <img src="/static/image/已关注.png" style="cursor: pointer;width: 20px;height: 20px;position: relative;top: 25px;left: -20px" alt="" @click="cancelconcern(item.uname)">
             <div style="clear: both;padding-top: 20px">
               说明：Ta还木有个人介绍呢。
             </div>

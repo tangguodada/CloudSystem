@@ -113,8 +113,10 @@
                 <div class="bottom clearfix">
                   <img :src="item.uicon" alt="" style="width: 30px;height: 30px;border-radius: 15px">
                   <span>{{item.uname}}</span>
-                  <span v-if="item.uname!=currentusername&&!item.concern" style="color: blue;margin-left: 5px;font-size: 14px;cursor: pointer" @click="newconcern(item.uname)">关注TA</span>
-                  <span v-if="item.concern" style="color: blue;margin-left: 5px;font-size: 14px;cursor: pointer" @click="cancelconcern(item.uname)">取关TA</span>
+                  <img v-if="item.uname!=currentusername&&!item.concern" style="cursor: pointer;width: 20px;height: 20px" src="/static/image/关注.png" alt="" @click="newconcern(item.uname)">
+                  <img v-if="item.concern" src="/static/image/已关注.png" style="cursor: pointer;width: 20px;height: 20px" alt="" @click="cancelconcern(item.uname)">
+                  <!--<span v-if="item.uname!=currentusername&&!item.concern" style="color: blue;margin-left: 5px;font-size: 14px;cursor: pointer" @click="newconcern(item.uname)">关注TA</span>-->
+                  <!--<span v-if="item.concern" style="color: blue;margin-left: 5px;font-size: 14px;cursor: pointer" @click="cancelconcern(item.uname)">取关TA</span>-->
                   <time class="time">{{tstime(item.shareTime)}}</time>
                 </div>
                 <!--<el-button type="text" class="button" @click="downloadfile(item.fileId)">&#12288;下载</el-button>-->
@@ -386,14 +388,18 @@
             .then(function (res) {
               console.log(res.data);
               if (res.data.status){
-                this.$message({
+                this.$notify({
+                  title: '成功',
                   message: '关注成功',
                   type: 'success'
                 });
                 this.getmyconcern();
                 this.getsharelist();
               } else {
-                this.$message.error('关注失败');
+                this.$notify.error({
+                  title: '错误',
+                  message: '关注失败'
+                });
               }
             }.bind(this))
             .catch(function (error) {

@@ -63,11 +63,11 @@
           accordion
           highlight-current
           @node-click="handleNodeClick">
-          <div slot-scope="{node,data}">
+          <div slot-scope="{node,data}" style="display: flex;align-items: center;">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#el-icon-erp-wenjianjiaweigongxiang"></use>
             </svg>
-            <span style="display: block;float: right;margin-top: 1.5px">&#12288;{{node.label}}</span>
+            <span>&#12288;{{node.label}}</span>
           </div>
         </el-tree>
         <div slot="footer" class="dialog-footer">

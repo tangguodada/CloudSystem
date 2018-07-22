@@ -9,7 +9,7 @@
           <i class="el-icon-erp-wangpanxinjianwenjianjia-copy el-icon--left" style="position: absolute;left: 16px;top: 9px"></i>
           <span style="position: absolute;left: 35px;top: 10px">新建文件夹</span>
         </el-button>
-        <el-button class="se4" v-show="flag_deleteall"><i class="el-icon-delete el-icon--left"></i><span>删除</span></el-button>
+        <el-button class="se4" v-show="flag_deleteall" @click="deletechoosefile"><i class="el-icon-delete el-icon--left" style="position: relative;top: -2px;left: -5px"></i><span style="position: relative;top: -2px;left: -5px">删除</span></el-button>
       </div>
       <div style="float: right">
         <el-input
@@ -48,11 +48,11 @@
           accordion
           highlight-current
           @node-click="handleNodeClick">
-          <div slot-scope="{node,data}">
+          <div slot-scope="{node,data}" style="display: flex;align-items: center;">
             <svg class="icon" aria-hidden="true">
                   <use xlink:href="#el-icon-erp-wenjianjiaweigongxiang"></use>
             </svg>
-            <span style="display: block;float: right;margin-top: 1.5px">&#12288;{{node.label}}</span>
+            <span>&#12288;{{node.label}}</span>
           </div>
         </el-tree>
         <div slot="footer" class="dialog-footer">
@@ -302,10 +302,49 @@
           textarea:'',
           friendid:'',
           dialogMusicVisible:false,
-          dialogmusicsrc:''
+          dialogmusicsrc:'',
+          listfileid:[]
         }
       },
       methods:{
+        deletechoosefile(){
+          this.$confirm('此操作将把文件移入回收站, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$axios.post("/userfile/remove",{
+              fileId:this.listfileid.join()
+            },{
+              headers:{
+                'Authorization':sessionStorage.getItem('userToken'),
+                'Content-Type':'application/x-www-form-urlencoded'
+              }
+            })
+              .then(function (res) {
+                console.log(res.data);
+                if (res.data.status){
+                  this.$message({
+                    message: '文件放入回收站成功',
+                    type: 'success',
+                    center: true
+                  });
+                  this.getfilelist();
+                } else {
+                  this.$message.error('文件放入回收站失败');
+                }
+              }.bind(this))
+              .catch(function (error) {
+                console.log(error);
+              });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除',
+              center: true
+            });
+          });
+        },
         closevideo(){
           $('#movie').get(0).pause();
         },
@@ -353,7 +392,9 @@
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                this.$axios.put("/userfile/remove/"+this.filelist[indexid].id,{
+                this.$axios.post("/userfile/remove",{
+                  fileId:this.filelist[indexid].id
+                },{
                   headers:{
                     'Authorization':sessionStorage.getItem('userToken'),
                     'Content-Type':'application/x-www-form-urlencoded'
@@ -473,6 +514,10 @@
         handleSelectionChange(val) { //多选框选中的行
           this.multipleSelection = val;
           console.log(this.multipleSelection);
+          this.listfileid = [];
+          for(let i=0;i<this.multipleSelection.length;i++){
+            this.listfileid.push(this.multipleSelection[i].id);
+          }
           if (this.multipleSelection.length != 0){
             this.flag_deleteall = true;
           } else {

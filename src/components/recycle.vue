@@ -1,7 +1,8 @@
 <template>
     <div id="recycle">
       <div class="main-content-head">
-      <el-button class="se4" v-show="flag_deleteall"><i class="el-icon-delete el-icon--left"></i><span>还原</span></el-button>
+      <el-button class="se4" v-show="flag_deleteall" @click="restorechoose"><i class="el-icon-refresh el-icon--left" style="position: relative;top: -2px;left: -5px"></i><span style="position: relative;top: -2px;left: -5px">还原</span></el-button>
+        <el-button class="se5" v-show="flag_deleteall" @click="deletechoose"><i class="el-icon-delete el-icon--left" style="position: relative;top: -2px;left: -5px"></i><span style="position: relative;top: -2px;left: -5px">删除</span></el-button>
       </div>
       <div style="float: right">
         <el-button @click="deleteall"><i class="el-icon-delete el-icon--left"></i><span>清空回收站</span></el-button>
@@ -91,10 +92,75 @@
         return{
           filelist:[],
           multipleSelection:[],
-          flag_deleteall:false
+          flag_deleteall:false,
+          listfileid:[]
         }
       },
       methods:{
+        restorechoose(){
+          this.$axios.post("/userfile/restore",{
+            fileId:this.listfileid.join()
+          },{
+            headers:{
+              'Authorization':sessionStorage.getItem('token'),
+              'Content-Type':'application/x-www-form-urlencoded'
+            }
+          })
+            .then(function (res) {
+              console.log(res.data);
+              if (res.data.status){
+                this.$message({
+                  message: '文件还原成功',
+                  type: 'success',
+                  center: true
+                });
+                this.getfilelist();
+              } else {
+                this.$message.error('文件还原失败');
+              }
+            }.bind(this))
+            .catch(function (error) {
+              console.log(error);
+            })
+        },
+        deletechoose(){
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$axios.post("/userfile/empty/file",{
+              fileId:this.listfileid.join()
+            },{
+              headers:{
+                'Authorization':sessionStorage.getItem('token'),
+                'Content-Type':'application/x-www-form-urlencoded'
+              }
+            })
+              .then(function (res) {
+                console.log(res);
+                if (res.status){
+                  this.$message({
+                    message: '彻底删除成功',
+                    type: 'success',
+                    center: true
+                  });
+                  this.getfilelist();
+                } else {
+                  this.$message.error('删除失败');
+                }
+              }.bind(this))
+              .catch(function (error) {
+                console.log(error);
+              });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除',
+              center: true
+            });
+          });
+        },
         changetime(val){
           let transformtime = new Date(val);
           let commonTime  =transformtime.toLocaleDateString();
@@ -105,6 +171,10 @@
         },
         handleSelectionChange(val) { //多选框选中的行
           this.multipleSelection = val;
+          this.listfileid = [];
+          for(let i=0;i<this.multipleSelection.length;i++){
+            this.listfileid.push(this.multipleSelection[i].id);
+          }
           if (this.multipleSelection.length != 0){
             this.flag_deleteall = true;
           } else {
@@ -118,21 +188,23 @@
           val.isshow = false;
         },
         fileback(val){
-          this.$axios.post("/userfile/restore/"+ val,{
+          this.$axios.post("/userfile/restore",{
+            fileId:val
+          },{
             headers:{
               'Authorization':sessionStorage.getItem('token'),
               'Content-Type':'application/x-www-form-urlencoded'
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
-              this.filelist = [].concat(res.data.data);
+              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '文件还原成功',
                   type: 'success',
                   center: true
                 });
+                this.getfilelist();
               } else {
                 this.$message.error('文件还原失败');
               }
@@ -172,7 +244,9 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$axios.delete("/userfile/empty/"+val,{
+            this.$axios.post("/userfile/empty/file",{
+              fileId:val
+            },{
               headers:{
                 'Authorization':sessionStorage.getItem('token'),
                 'Content-Type':'application/x-www-form-urlencoded'
@@ -300,6 +374,12 @@
     position:absolute;
     top: 14px;
     left: 20px;
+  }
+  .se5{
+    width: 80px;
+    position:absolute;
+    top: 14px;
+    left: 110px;
   }
   .icon {
     width: 1em; height: 1em;

@@ -41,7 +41,8 @@
                 clearable
                 @blur = "passwordValidate"
                 @focus = "passwordTip1 = false"
-                type="password">
+                type="password"
+                @keyup.enter.native="click_login">
                 <i slot="prefix" class="el-input__icon el-icon-erp-password"></i>
               </el-input>
               <div class="Tip2" style="height: 20px">
