@@ -44,7 +44,7 @@
         },
         imageSubmit() {
           let x = document.getElementById('saveImage').files[0];
-          console.log(x);
+//          console.log(x);
           var type = x.name.split('\.');
           if (x == null) {
             this.$message.error('请选择文件!');
@@ -60,7 +60,7 @@
             };
             this.$axios.put("/icon", params, config)
               .then(function (res) {
-                console.log(res);
+//                console.log(res);
                 this.$store.commit('userImageGet', res.data.data.userInfo.icon);
                 sessionStorage.setItem('userAvatar', res.data.data.userInfo.icon);
               }.bind(this))

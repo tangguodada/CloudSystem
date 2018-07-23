@@ -155,7 +155,7 @@
         //封禁某个用户时发送请求
         handlefreeze(){
           this.$axios.put('/freeze/'+this.userId).then(function(res){
-            console.log(res);
+//            console.log(res);
             this.getTableList();
           }.bind(this))
             .catch(function(error){
@@ -172,7 +172,7 @@
         //禁封某个用户时的请求
         handleUnfreeze(){
           this.$axios.put('/unfreeze/'+this.unfreezeuserId).then(function(res){
-            console.log(res);
+//            console.log(res);
             this.getTableList();
           }.bind(this))
             .catch(function(error){
@@ -188,7 +188,7 @@
           }
           this.$axios.post('/search'+'?username='+this.search_word)
             .then(function(res){
-              console.log(res);
+//              console.log(res);
               if(res.data.status == true){
                 this.userList = res.data.data;
               }else if(res.data.status == false){
@@ -211,13 +211,13 @@
           let num = [];
           for(let i=0;i<comments.length;i++){
             num.push(comments[i].id);
-            console.log(num);
+//            console.log(num);
           }
           let numJoin =  num.join(',');
-          console.log(numJoin);
+//          console.log(numJoin);
           this.$axios.put('/freeze'+ '?list='+numJoin +'')
             .then(function(res){
-              console.log(res);
+//              console.log(res);
               this.getTableList();
             }.bind(this))
             .catch(function(error){

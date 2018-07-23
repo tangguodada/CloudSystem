@@ -106,7 +106,7 @@
         handleRead(index) {
           //增删数组中的元素 按数组下标 一个一个删除
           const item = this.unread.splice(index, 1);
-          console.log(item);
+//          console.log(item);
           this.read = item.concat(this.read);
         },
         //删除按钮事件

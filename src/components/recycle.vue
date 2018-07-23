@@ -107,7 +107,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '文件还原成功',
@@ -138,7 +138,7 @@
               }
             })
               .then(function (res) {
-                console.log(res);
+//                console.log(res);
                 if (res.status){
                   this.$message({
                     message: '彻底删除成功',
@@ -197,7 +197,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '文件还原成功',
@@ -221,7 +221,7 @@
             }
           })
             .then(function (res) {
-              console.log(res);
+//              console.log(res);
               this.filelist = [];
               if (res.data.status){
                 this.$message({
@@ -253,7 +253,7 @@
               }
             })
               .then(function (res) {
-                console.log(res);
+//                console.log(res);
                 if (res.status){
                   this.$message({
                     message: '彻底删除成功',
@@ -283,7 +283,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               this.filelist = [].concat(res.data.data);
             }.bind(this))
             .catch(function (error) {

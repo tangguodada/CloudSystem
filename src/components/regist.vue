@@ -131,7 +131,7 @@
           this.$axios.post('/auth/checkname',{
             'username':this.username,
           }).then(function (res) {
-            console.log(res);
+//            console.log(res);
             this.usernameTip = res.data.info;
             if(this.usernameTip == "用户名已被注册"){
               this.flag_username1 = true;
@@ -152,7 +152,7 @@
           this.$axios.post('/auth/checkPhone',{
             'phoneNumber':this.account,
           }).then(function (res) {
-            console.log(res);
+//            console.log(res);
             this.accountTip = res.data.info;
             if(this.accountTip == "手机号已被注册"){
               this.flag_account1 = true;

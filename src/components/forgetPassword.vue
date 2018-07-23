@@ -159,7 +159,7 @@
               tamp:tamp
             })
             .then(function (res) {
-              console.log(res);
+//              console.log(res);
             })
             .catch(function(res){
               console.log(error);
@@ -182,11 +182,11 @@
             password:this.newPassword
           })
             .then(function (res) {
-              console.log(res);
+//              console.log(res);
               messagehash = res.data.hash;
               tamp = res.data.tamp;
-              console.log(messagehash);
-              console.log(tamp);
+//              console.log(messagehash);
+//              console.log(tamp);
             })
             .catch(function(error){
               console.log(error);

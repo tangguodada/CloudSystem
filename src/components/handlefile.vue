@@ -121,7 +121,7 @@
             <el-input
               type="textarea"
               :rows="2"
-              placeholder="描述一下分享的文件吧"
+              placeholder="描述一下分享的文件吧(少于9个字符)"
               v-model="textarea">
             </el-input>
             <el-button type="primary" @click="sharetocircle">分享</el-button>
@@ -322,7 +322,7 @@
               }
             })
               .then(function (res) {
-                console.log(res.data);
+//                console.log(res.data);
                 if (res.data.status){
                   this.$message({
                     message: '文件放入回收站成功',
@@ -377,7 +377,7 @@
               command.isshow = false;
               this.currentchooseid = command.id;
             } else if (index == 1){
-              console.log("复制到"+command.name);
+//              console.log("复制到"+command.name);
               this.dropdownshow = false;
               command.isshow = false;
             } else if (index == 2){
@@ -401,7 +401,7 @@
                   }
                 })
                   .then(function (res) {
-                    console.log(res);
+//                    console.log(res);
                     if (res.data.status){
                       this.$message({
                         message: '文件放入回收站成功',
@@ -445,7 +445,7 @@
                 }
               })
                 .then(function (res) {
-                  console.log(res);
+//                  console.log(res);
                   if (res.data.status){
                     this.$message({
                       message: '文件夹创建成功',
@@ -470,7 +470,7 @@
                 }
               })
                 .then(function (res) {
-                  console.log(res.data);
+//                  console.log(res.data);
                   if (res.data.status){
                     this.$message({
                       message: '文件重命名成功',
@@ -513,7 +513,7 @@
         },
         handleSelectionChange(val) { //多选框选中的行
           this.multipleSelection = val;
-          console.log(this.multipleSelection);
+//          console.log(this.multipleSelection);
           this.listfileid = [];
           for(let i=0;i<this.multipleSelection.length;i++){
             this.listfileid.push(this.multipleSelection[i].id);
@@ -582,7 +582,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
                 this.getstoresize();
@@ -639,7 +639,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '文件移动成功',
@@ -723,7 +723,7 @@
           }
         },
         downloadfile(val){
-          console.log(val);
+//          console.log(val);
           // this.$axios.get("/auth/download/" + val,
           //   {
           //     headers: {
@@ -765,7 +765,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
               } else {
@@ -783,7 +783,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
               } else {
@@ -801,7 +801,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
               } else {
@@ -819,7 +819,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
               } else {
@@ -837,7 +837,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
               } else {
@@ -855,7 +855,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.filelist = [].concat(res.data.data);
               } else {
@@ -875,7 +875,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               this.tableDownload = [].concat(res.data.data.records);
               this.total = res.data.data.total;
             }.bind(this))
@@ -884,7 +884,7 @@
             })
         },
         downloadDelete(index, row){
-          console.log(index, row);
+//          console.log(index, row);
           this.$axios.delete("/delete/"+row.id,{
             headers:{
               'Authorization':sessionStorage.getItem('userToken')
@@ -919,7 +919,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.$message({
                   message: '搜索成功',
@@ -973,7 +973,7 @@
             })
         },
         transferchange(value){
-          console.log(value);
+//          console.log(value);
           this.friendid = value.join();
         },
         sharetofriend(){
@@ -1007,6 +1007,14 @@
             })
         },
         sharetocircle(){
+          if (this.textarea.length > 9 ){
+            this.$message({
+              message: '字符过长，重新输入',
+              type: 'warning',
+              center: true
+            });
+            return ;
+          }
           this.$axios.post("/usershare/share",{
             fileId:this.currentchooseid,
             description:this.textarea
@@ -1039,7 +1047,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               let pe = parseInt(((res.data.data.size) / (res.data.data.storage)) * 100);
               this.$store.commit('userPercent',pe);
               this.$store.commit('userStoresize',res.data.data.size.toFixed(2));
@@ -1264,7 +1272,7 @@
                 (new WebUploader.Uploader()).md5File(file, 0, 10 * 1024 * 1024).progress(function(percentage) {}).then(function(val) {
                   fileMd5 = val;
                   file_md5 = val;
-                  console.log("md5:"+fileMd5);
+//                  console.log("md5:"+fileMd5);
                   var url = checkMd5;
                   var data = {
                     name: fileName,
@@ -1292,7 +1300,7 @@
                         task.reject();
                       }
                     }).then(function(data, textStatus, jqXHR) {
-                      console.log(data);
+//                      console.log(data);
                       if (data.data.result == "1"){
                         task.resolve();
                       }
@@ -1332,7 +1340,7 @@
                   timeout: 5000, // todo 超时的话，只能认为该分片未上传过
                   dataType: "json",
                 }).then(function(data, textStatus, jqXHR) {
-                  console.log(data);
+//                  console.log(data);
                   if(data.data.result == 1) {
                     task.reject(); // 分片存在，则跳过上传
                   } else {
@@ -1350,7 +1358,7 @@
                 (new WebUploader.Uploader()).md5File(file, 0, 10 * 1024 * 1024).progress(function(percentage) {}).then(function(val) {
                   // fileMd5 = val;
                   fileMd5 = file_md5;
-                  console.log("md5:"+fileMd5);
+//                  console.log("md5:"+fileMd5);
                   var url = checkMerge;
                   var data = {
                     name: file.name,
@@ -1378,7 +1386,7 @@
                     }
                   }).then(function (data, textStatus, jqXHR) {
                     // 业务逻辑...
-                    console.log(data);
+//                    console.log(data);
                     if (data.status){
                       that.successflag = true;
                       setTimeout(function () {

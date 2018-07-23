@@ -235,12 +235,12 @@ import countTo from 'vue-count-to'
         getUserCount(){
           this.$axios.get('/count')
             .then(function(res){
-              console.log('11111111');
-              console.log(res);
+//              console.log('11111111');
+//              console.log(res);
               this.count = res.data.data;
             }.bind(this))
             .catch(function(error){
-              console.log(error);
+//              console.log(error);
             })
         },
         //获取当前日期
@@ -254,9 +254,9 @@ import countTo from 'vue-count-to'
         getDiskStatus(){
           this.$axios.get('/fdfs_log/current_status')
             .then(function(res){
-              console.log(res);
+//              console.log(res);
               this.fdfsStatus = res.data.data;
-              console.log(this.fdfsStatus);
+//              console.log(this.fdfsStatus);
               for(let i=0;i<this.fdfsStatus.length;i++){
                 if(this.fdfsStatus[i].groupname == 'group1'){
                  this.group1.push(this.fdfsStatus[i]);
@@ -266,9 +266,9 @@ import countTo from 'vue-count-to'
                   this.group3.push(this.fdfsStatus[i]);
                 }
               }
-              console.log(this.group1);
-              console.log(this.group2);
-              console.log(this.group3);
+//              console.log(this.group1);
+//              console.log(this.group2);
+//              console.log(this.group3);
               this.group1StorageCount = this.group1[0].storageCount;
               this.group1ActiveCount = this.group1[0].activeCount;
               this.group1data1 = this.group1[0].totalMb;
@@ -291,7 +291,7 @@ import countTo from 'vue-count-to'
           this.option.title.text = 'group1';
           this.option.series[0].data[0].value = this.group1data2;
           this.option.series[0].data[1].value = this.group1data1 - this.group1data2;
-          console.log("test " + this.option.series[0].data[1].value);
+//          console.log("test " + this.option.series[0].data[1].value);
           this.charts = this.$echarts.init(this.$refs.showcharts);
           this.charts.setOption(this.option);
         },

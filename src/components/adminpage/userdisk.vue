@@ -113,7 +113,7 @@
         getuserdisk(){
           this.$axios.post('/getuserdisk'+'?page='+this.currentPage1+'&page_size=8')
             .then(function(res){
-              console.log(res);
+//              console.log(res);
               this.userDiskList = res.data.data.records;
               this.pagetotal =  res.data.data.total;
 //             for(let i=0;i<this.userDiskList.length;i++){

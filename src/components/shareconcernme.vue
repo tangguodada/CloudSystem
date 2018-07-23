@@ -34,7 +34,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               if (res.data.data != null){
                 this.concernnum = res.data.data.length;
                 this.concernlist = [].concat(res.data.data)

@@ -79,9 +79,9 @@
         this.phonenumber = this.$route.query.phonenumber;
         this.username = this.$route.query.username;
         this.password = this.$route.query.password;
-        console.log(this.phonenumber);
-        console.log(this.username);
-        console.log(this.password);
+//        console.log(this.phonenumber);
+//        console.log(this.username);
+//        console.log(this.password);
         $('#getCode').click();
       },
       click_regist(){
@@ -90,7 +90,7 @@
           'password':this.password,
           'msgNum':this.checkstr
         }).then(function(res){
-          console.log(res);
+//          console.log(res);
             if(res.data.info == "成功注册"){
             this.$message.success('用户注册成功,请登录!');
             this.$router.push('/');
@@ -111,12 +111,12 @@
             clearInterval(auth_timer);
           }
         },1000);
-        console.log(number);
+//        console.log(number);
         this.$axios.post('/auth/send',{
             phoneNumber:number,
         })
           .then(function (res) {
-          console.log(res);
+//          console.log(res);
 
         }.bind(this))
           .catch(function(error){

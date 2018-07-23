@@ -192,9 +192,9 @@
         getDiskStatus(){
           this.$axios.get('/fdfs_log/current_status')
             .then(function(res){
-              console.log(res);
+             // console.log(res);
               this.fdfsStatus = res.data.data;
-              console.log(this.fdfsStatus);
+              //.log(this.fdfsStatus);
               for(let i=0;i<this.fdfsStatus.length;i++){
                 if(this.fdfsStatus[i].groupname == 'group1'){
                   this.group1.push(this.fdfsStatus[i]);
@@ -204,9 +204,9 @@
                   this.group3.push(this.fdfsStatus[i]);
                 }
               }
-              console.log(this.group1);
-              console.log(this.group2);
-              console.log(this.group3);
+              //.log(this.group1);
+              //.log(this.group2);
+              //.log(this.group3);
               this.group1StorageCount = this.group1[0].storageCount;
               this.group1ActiveCount = this.group1[0].activeCount;
               this.group1data1 = this.group1[0].totalMb;

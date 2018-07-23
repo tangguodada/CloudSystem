@@ -82,7 +82,7 @@
                 'newPassword':this.ruleForm2.pass,
               },config)
                 .then(function(res){
-                  console.log(res);
+//                  console.log(res);
                   if (res.data.status == false ){
                     this.$message.error('原始密码错误!');
                   }else{

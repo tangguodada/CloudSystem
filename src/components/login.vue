@@ -306,7 +306,7 @@
             password:this.password
           })
             .then(function (res) {
-              console.log(res);
+//              console.log(res);
               sessionStorage.setItem('userToken',res.headers.authorization);
               if(res.data.status == false){
                 this.$message.error("用户名或密码错误");
@@ -351,14 +351,14 @@
         getToken(){
           this.$axios.get('/token')
             .then(function (res) {
-              console.log(res);
+//              console.log(res);
               sessionStorage.setItem('username',res.data.data.userInfo.username);
               sessionStorage.setItem('userAvatar',res.data.data.userInfo.icon);
               sessionStorage.setItem('userId',res.data.data.userInfo.id);
               this.$store.commit('userImageGet',res.data.data.userInfo.icon);
               this.$store.commit('userInfoGet',res.data.data.userInfo);
               store.state.userInfo = res.data.data.userInfo;
-              console.log(store.state.userInfo);
+//              console.log(store.state.userInfo);
               // store.state.username = res.data.data.userInfo.username;
               // console.log(store.state.username);
               //role_id =1 为普通用户 role_id= 0 为管理员用户

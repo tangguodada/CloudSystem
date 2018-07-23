@@ -124,7 +124,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.applytrue = true;
                 this.applyfalse = false;
@@ -159,7 +159,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               this.friendlist = [].concat(res.data.data);
             }.bind(this))
             .catch(function (error) {
@@ -201,7 +201,7 @@
 
         websocketonmessage:function(e){ //数据接收
           let port = eval('(' + e.data + ')');
-          console.log(port.content);
+//          console.log(port.content);
           if (port.sender == this.fdid) {
             let recevmessage = "<div class='dialogByyou'><div id='talk-img'><img id='talk-myimg' src='"+this.fdsrc+"'></div><div class='sanjiaoLeft'></div><div class='talkbubble'>"+this.replace_em(port.content)+"</div></div>";
             $('.chat-content').append(recevmessage);
@@ -224,7 +224,7 @@
 
         sendinfo(){
           let content = $('#saytext').val();
-          console.log(content);
+//          console.log(content);
           let chatmessage = "<div class='dialogByme'><div id='talk-img'><img id='talk-myimg' src='"+this.mysrc+"'></div><div class='sanjiao'></div><div class='talkbubbleMe'>"+this.replace_em(content)+"</div></div>";
           $('.chat-content').append(chatmessage);
           this.$axios.post("/chat/send",{
@@ -237,7 +237,7 @@
             }
           })
             .then(function (res) {
-              console.log(res);
+//              console.log(res);
             }.bind(this))
             .catch(function (error) {
               console.log(error);
@@ -255,7 +255,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data.data);
+//              console.log(res.data.data.data);
               for (let i=0;i<res.data.data.data.length;i++){
                 this.unreadlist.push(res.data.data.data[i].sender)
               }
@@ -301,7 +301,7 @@
               this.setbottom();
             }.bind(this))
             .catch(function (error) {
-              console.log(error);
+//              console.log(error);
             })
 
           this.$axios.get("/chat/read/"+this.fdid,{
@@ -311,7 +311,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data.data);
+//              console.log(res.data.data.data);
             }.bind(this))
             .catch(function (error) {
               console.log(error);

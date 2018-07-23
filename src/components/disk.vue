@@ -97,7 +97,7 @@
           });
         },
         handleSelect(key, keyPath) {
-          console.log(key, keyPath);
+//          console.log(key, keyPath);
         },
         getstoresize() {
           this.$axios.get("/getstorage", {
@@ -106,7 +106,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               this.size = res.data.data.size;
               this.storage = res.data.data.storage;
               this.percentage = parseInt(((res.data.data.size) / (res.data.data.storage)) * 100);

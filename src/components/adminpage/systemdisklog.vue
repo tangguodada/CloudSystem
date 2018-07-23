@@ -104,7 +104,7 @@
         getfdfslog(){
             this.$axios.get('/fdfs_log/history_logs'+"?current="+this.currentPage1+'&size=10')
               .then(function(res){
-                console.log(res);
+//                console.log(res);
                 this.pagetotal = res.data.data.total;
                 this.fdfsLogList = res.data.data.records;
                 for(let i=0;i<this.fdfsLogList.length;i++){
@@ -113,7 +113,7 @@
                   let time = this.fdfsLogList[i].createDate;
                   let transformtime = new Date(time);
                   let updatetime = transformtime.toLocaleDateString().replace(/\//g,"-")+" "+transformtime.toTimeString().substr(0,8);
-                  console.log(updatetime);
+//                  console.log(updatetime);
                   this.fdfsLogList[i].createDate = updatetime;
                 }
 

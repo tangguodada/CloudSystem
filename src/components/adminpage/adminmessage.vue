@@ -61,17 +61,17 @@
           // Date.prototype.toLocaleDateString = function (commonTime){
           //   return this.getFullYear()+"-"+(this.getMonth()+1) + "-" + this.getDate();
           // }
-          // console.log(commonTime);
+//          // console.log(commonTime);
         },
         getAdminMessage(){
           this.$axios.get('/managerinfo').then(function(res){
-            console.log(res);
+//            console.log(res);
             this.adminname = res.data.data.username;
             let time = res.data.data.createTime;
             let transformtime = new Date(time);
             let commonTime  =transformtime.toLocaleDateString().replace(/\//g,"-");
             this.adminRegistTime = commonTime;
-            // console.log(commonTime);
+//            // console.log(commonTime);
           }.bind(this))
             .catch(function(error){
               console.log(error);

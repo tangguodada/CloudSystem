@@ -18,7 +18,7 @@
       methods:{
         getParams () {
           this.id = sessionStorage.getItem('pdfid');
-          console.log(this.id);
+//          console.log(this.id);
           // this.$axios.get("/userfile/preview/b86a3a2ec076461c92857666970a97d9",{
           //   headers:{
           //     'Authorization':sessionStorage.getItem('userToken')

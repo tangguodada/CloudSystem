@@ -121,7 +121,7 @@
           getshareList(){
             this.$axios.get('/getUserShare'+'?page='+this.currentPage1+'&page_size=8')
               .then(function(res){
-                console.log(res);
+               // console.log(res);
                 this.shareList = res.data.data.records;
                 this.pagetotal = res.data.data.total;
                 for(let i=0;i<this.shareList.length;i++){
@@ -143,7 +143,7 @@
         prohibitShare(){
             this.$axios.put('/freeze/share/'+this.prohibitId + '?reason=' + this.form.reason + '')
               .then(function(res){
-                console.log(res);
+//                console.log(res);
                 this.$message.success("禁封一条消息成功");
                 this.getshareList();
               }.bind(this))

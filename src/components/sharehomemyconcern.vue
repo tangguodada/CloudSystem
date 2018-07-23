@@ -36,7 +36,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               this.myconcernnum = res.data.data.length;
               this.myconcern = [].concat(res.data.data);
             }.bind(this))
@@ -52,7 +52,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$notify({
                   title: '成功',

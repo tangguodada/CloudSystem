@@ -135,7 +135,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.data != null){
                 this.tableData = [].concat(res.data.data);
               }

@@ -65,7 +65,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               this.concernnum = res.data.data.length;
             }.bind(this))
             .catch(function (error) {
@@ -80,7 +80,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               this.myconcernnum = res.data.data.length;
             }.bind(this))
             .catch(function (error) {

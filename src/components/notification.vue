@@ -106,7 +106,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               if (res.data.data.length != 0) {
                 this.tableData = [].concat(res.data.data)
               } else {
@@ -127,7 +127,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data.data);
+//              console.log(res.data.data);
               if (res.data.data.length != 0) {
                 this.tableData = [].concat(res.data.data)
               } else {
@@ -156,7 +156,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '好友添加成功',
@@ -185,7 +185,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '成功标记为已读',
@@ -218,7 +218,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '全部标记为已读',
@@ -270,7 +270,7 @@
             }
           })
             .then(function (res) {
-              console.log(res.data);
+//              console.log(res.data);
               if (res.data.status){
                 this.$message({
                   message: '保存成功',

@@ -83,7 +83,7 @@
             .then(function(res){
               store.state.userInfo = res.data.data.userInfo;
               this.$message.success("修改信息成功!");
-              console.log(res);
+//              console.log(res);
             }.bind(this))
             .catch(function(error){
               console.log(error);
