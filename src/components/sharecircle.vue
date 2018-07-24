@@ -71,10 +71,11 @@
         <el-row>
           <el-col :span="10" v-for="(item, index) in sharelist" :key="index" :offset="index%2 != 0 ? 2 : 0">
             <el-card :body-style="{ padding: '0px' }">
-              <span style="width:250px;overflow: hidden;
+              <span style="width:90%;overflow: hidden;
         text-overflow: ellipsis;
         -o-text-overflow: ellipsis;
-        white-space:nowrap;display: block">&#12288;{{item.fileName}}</span>
+        white-space:nowrap;display: block;float: left">&#12288;{{item.fileName}}</span>
+              <img v-if="item.uname==currentusername" src="/static/image/关闭.png" style="width: 23px;height: 23px;display: block;float: left;cursor: pointer" alt="" @click="cancelshare(item.id)">
               <svg class="icon" aria-hidden="true" v-show="cutfile(item.fileName)==0">
                 <use xlink:href="#el-icon-erp-wenjianjiaweigongxiang"></use>
               </svg>
@@ -123,7 +124,13 @@
                 <el-button type="text" class="button"><a :href="'http://192.168.100.35:8080/auth/download/'+item.fileId" class="dl">&#12288;下载</a></el-button>
                 <el-button type="text" class="button" @click="preview(item)" style="color: #007bff">&#12288;预览</el-button>
                 <el-button type="text" class="button" style="margin-left: 0px" @click="praise(item.id,item.uname)">{{item.star}}</el-button>
-                <i class="el-icon-erp-iconfontzhizuobiaozhun44" style="float: right;cursor: pointer;margin-top: 2px" @click="praise(item.id,item.uname)"></i>
+                <i class="el-icon-erp-dianzan" v-show="!item.myStar" style="float: right;cursor: pointer;margin-top: 2px" @click="praise(item.id,item.uname)"></i>
+                <!--<i class="el-icon-erp-dianzan" v-show="item.myStar" style="float: right;cursor: pointer;margin-top: 2px" @click="praise(item.id,item.uname)"></i>-->
+                <i style="float: right;cursor: pointer;width: 16px;height: 16px" @click="cancelpraise(item.id)">
+                <svg aria-hidden="true" v-show="item.myStar" style="width: 16px;height: 16px">
+                  <use xlink:href="#el-icon-erp-zan"></use>
+                </svg>
+                </i>
               </div>
             </el-card>
           </el-col>
@@ -344,6 +351,32 @@
               console.log(error);
             });
         },
+        cancelpraise(id){
+          this.$axios.delete("/usershare/delapplause?id="+id, {
+            headers: {
+              'Authorization': sessionStorage.getItem('userToken')
+            }
+          })
+            .then(function (res) {
+              console.log(res.data);
+              if (res.data.status){
+                this.getsharelist();
+                this.$notify({
+                  title: '成功',
+                  message: '取消点赞成功',
+                  type: 'success'
+                });
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: '取消点赞失败'
+                });
+              }
+            }.bind(this))
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
         getusershare(){
           this.$axios.get("/usershare", {
             headers: {
@@ -448,6 +481,44 @@
             .catch(function (error) {
               console.log(error);
             });
+        },
+        cancelshare(id){
+          this.$confirm('此操作将取消分享该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+          this.$axios.delete("/usershare/cancelshare?id="+id, {
+            headers: {
+              'Authorization': sessionStorage.getItem('userToken')
+            }
+          })
+            .then(function (res) {
+              console.log(res.data);
+              if (res.data.status){
+                this.getsharelist();
+                this.$notify({
+                  title: '成功',
+                  message: '取消分享成功',
+                  type: 'success'
+                });
+              } else {
+                this.$notify.error({
+                  title: '错误',
+                  message: '取消分享失败'
+                });
+              }
+            }.bind(this))
+            .catch(function (error) {
+              console.log(error);
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消操作',
+              center: true
+            });
+          });
         }
       },
       mounted(){
