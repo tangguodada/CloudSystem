@@ -45,7 +45,7 @@
           this.$router.push('/adminmessage');
         },
         logout(){
-          this.$confirm('此操作将退出改系统，是否继续?','提示',{
+          this.$confirm('此操作将退出该系统，是否继续?','提示',{
             confirmButtonText:'确定',
             cancleButtonText:'取消',
             type:'warning'

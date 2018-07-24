@@ -34,6 +34,9 @@
             <svg class="icon" aria-hidden="true" v-show="cuttfile(scope.row.fileName)==8">
               <use xlink:href="#el-icon-erp-zip"></use>
             </svg>
+            <svg class="icon" aria-hidden="true" v-show="cuttfile(scope.row.fileName)==9">
+              <use xlink:href="#el-icon-erp-yinyue"></use>
+            </svg>
             <svg class="icon" aria-hidden="true" v-show="cuttfile(scope.row.fileName)==10">
               <use xlink:href="#el-icon-erp-file"></use>
             </svg>
@@ -123,6 +126,9 @@
               break;
             case "zip":
               return 8;
+              break;
+            case "mp3":
+              return 9;
               break;
             default:
               return 10;

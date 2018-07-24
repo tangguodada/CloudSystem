@@ -46,12 +46,10 @@
           let x = document.getElementById('saveImage').files[0];
 //          console.log(x);
           var type = x.name.split('\.');
+//          console.log(type[1]);
           if (x == null) {
             this.$message.error('请选择文件!');
-          } else if (type[1] != 'jpg' || type[1] != 'png') {
-            this.$message.error('请上传jpg或png格式的文件!');
-          }
-          else {
+          } else if (type[1] == 'jpg' || type[1] == 'png' || type[1] == 'PNG') {
             let params = new FormData(); //创建一个form对象
             params.append('file', x, x.name);  //append 向form表单添加数据
             //添加请求头  通过form添加的图片和文件的格式必须是multipart/form-data
@@ -67,6 +65,9 @@
               .catch(function (error) {
                 console.log(error);
               })
+          }
+          else {
+            this.$message.error('请上传jpg或png格式的文件!');
           }
         }
         },

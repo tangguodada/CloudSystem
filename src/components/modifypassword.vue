@@ -113,8 +113,8 @@
   }
   .form-password-div{
     position: relative;
-    margin-top: 60px;
-    margin-left: 60px;
+    margin-top: 80px;
+    margin-left: 120px;
     width: 60%;
   }
 </style>

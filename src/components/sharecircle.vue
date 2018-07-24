@@ -108,7 +108,7 @@
               <svg class="icon" aria-hidden="true" v-show="cutfile(item.fileName)==10">
                 <use xlink:href="#el-icon-erp-file"></use>
               </svg>
-              <span style="position: relative;top: -120px;color: #999;">{{item.description==null?desnull:item.description}}</span>
+              <span style="position: relative;top: 10px;color: #999;display: inline-block;width: 45%;vertical-align: top">&#12288;&#12288;{{item.description==null?desnull:item.description}}</span>
               <div style="padding: 14px;">
                 <div class="bottom clearfix">
                   <img :src="item.uicon" alt="" style="width: 30px;height: 30px;border-radius: 15px">
@@ -120,8 +120,8 @@
                   <time class="time">{{tstime(item.shareTime)}}</time>
                 </div>
                 <!--<el-button type="text" class="button" @click="downloadfile(item.fileId)">&#12288;下载</el-button>-->
-                <el-button type="text" class="button"><a :href="'http://192.168.100.139:8080/auth/download/'+item.fileId" class="dl">&#12288;下载</a></el-button>
-                <el-button type="text" class="button" @click="preview(item)">&#12288;预览</el-button>
+                <el-button type="text" class="button"><a :href="'http://192.168.100.35:8080/auth/download/'+item.fileId" class="dl">&#12288;下载</a></el-button>
+                <el-button type="text" class="button" @click="preview(item)" style="color: #007bff">&#12288;预览</el-button>
                 <el-button type="text" class="button" style="margin-left: 0px" @click="praise(item.id,item.uname)">{{item.star}}</el-button>
                 <i class="el-icon-erp-iconfontzhizuobiaozhun44" style="float: right;cursor: pointer;margin-top: 2px" @click="praise(item.id,item.uname)"></i>
               </div>
@@ -292,7 +292,7 @@
         },
         downloadfile(val) {
           $.ajax({
-            url: 'http://192.168.100.139:8080/auth/download/' + val,
+            url: 'http://192.168.100.35:8080/auth/download/' + val,
             type: 'get',
             async: false,
             headers: {
@@ -304,7 +304,7 @@
               alert('no');
             },
             success: function (res) {
-              window.open('http://192.168.100.139:8080/auth/download/' + val);
+              window.open('http://192.168.100.35:8080/auth/download/' + val);
               // let url = res.config.url;
               // window.open(url);
             }

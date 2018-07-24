@@ -121,7 +121,8 @@
             <el-input
               type="textarea"
               :rows="2"
-              placeholder="描述一下分享的文件吧(少于9个字符)"
+              placeholder="描述一下分享的文件吧(少于50个字符)"
+              maxlength="50"
               v-model="textarea">
             </el-input>
             <el-button type="primary" @click="sharetocircle">分享</el-button>
@@ -192,7 +193,7 @@
                   <el-dropdown-item class="dropfont" @click.native="clickitem(scope.row,3)" >删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-                <a :href="'http://192.168.100.139:8080/auth/download/'+scope.row.id"><span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow><i class="el-icon-download"></i></span></a>
+                <a :href="'http://192.168.100.35:8080/auth/download/'+scope.row.id"><span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow><i class="el-icon-download"></i></span></a>
                 <!--<span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow @click="downloadfile(scope.row.id)"><i class="el-icon-download"></i></span>-->
                 <span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow @click="sharefile(scope.row.id)"><i class="el-icon-share"></i></span>
               </div>
@@ -740,7 +741,7 @@
           //     console.log(error);
           //   });
           $.ajax({
-            url:'http://192.168.100.139:8080/auth/download/'+val,
+            url:'http://192.168.100.35:8080/auth/download/'+val,
             type:'get',
             async:false,
             headers:{
@@ -752,7 +753,7 @@
               alert('no');
             },
             success:function (res) {
-              window.open('http://192.168.100.139:8080/auth/download/'+val);
+              window.open('http://192.168.100.35:8080/auth/download/'+val);
               // let url = res.config.url;
               // window.open(url);
             }
@@ -1007,14 +1008,14 @@
             })
         },
         sharetocircle(){
-          if (this.textarea.length > 9 ){
-            this.$message({
-              message: '字符过长，重新输入',
-              type: 'warning',
-              center: true
-            });
-            return ;
-          }
+//          if (this.textarea.length > 50 ){
+//            this.$message({
+//              message: '字符过长，重新输入',
+//              type: 'warning',
+//              center: true
+//            });
+//            return ;
+//          }
           this.$axios.post("/usershare/share",{
             fileId:this.currentchooseid,
             description:this.textarea
@@ -1132,7 +1133,7 @@
               $progress = $statusBar.find('.progress').hide(),
 
               //服务器路径
-              serverRootUrl = 'http://192.168.100.139:8080',
+              serverRootUrl = 'http://192.168.100.35:8080',
               checkMd5 = serverRootUrl + '/userfile/check_md5',
               checkUrl = serverRootUrl + '/userfile/check',
               checkMerge = serverRootUrl + '/userfile/merge',
@@ -1323,7 +1324,8 @@
                   name: fileName,
                   chunk: block.chunk,
                   size: block.end - block.start,
-                  chunks:chunks
+                  chunks:chunks,
+                  fileMd5:file_md5
                 };
                 $.ajax({
                   type: "POST",
@@ -1340,7 +1342,7 @@
                   timeout: 5000, // todo 超时的话，只能认为该分片未上传过
                   dataType: "json",
                 }).then(function(data, textStatus, jqXHR) {
-//                  console.log(data);
+                  console.log(data.data.result);
                   if(data.data.result == 1) {
                     task.reject(); // 分片存在，则跳过上传
                   } else {

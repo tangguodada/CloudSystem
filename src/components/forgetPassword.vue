@@ -104,8 +104,6 @@
 </template>
 
 <script>
-  let messagehash = 0;
-  let tamp = 0;
     export default {
         name: "forget-password",
       data(){
@@ -155,13 +153,16 @@
 
           this.$axios.post('/auth/validateNum',
             {
-              msgNum:messagehash,
-              tamp:tamp
+              msgNum:this.checkMessageStr,
             })
             .then(function (res) {
-//              console.log(res);
-            })
-            .catch(function(res){
+              console.log(res);
+              if(res.data.status == true){
+                this.$message("重置密码成功，请返回登录");
+                this.$router.push('/');
+              }
+            }.bind(this))
+            .catch(function(error){
               console.log(error);
             })
 
@@ -183,10 +184,6 @@
           })
             .then(function (res) {
 //              console.log(res);
-              messagehash = res.data.hash;
-              tamp = res.data.tamp;
-//              console.log(messagehash);
-//              console.log(tamp);
             })
             .catch(function(error){
               console.log(error);

@@ -180,7 +180,7 @@
         initWebSocket:function(){ //初始化weosocket
           let userid = sessionStorage.getItem('userId');
 
-          this.websock = new WebSocket("ws://192.168.100.139:8080/ws/"+userid);
+          this.websock = new WebSocket("ws://192.168.100.35:8080/ws/"+userid);
 
           this.websock.onopen = this.websocketonopen;
 

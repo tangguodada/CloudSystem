@@ -48,7 +48,7 @@
                 v-show="scope.row.type == 3"
                 size="medium"
                 type="primary"
-                @click="handleDelete(scope.row)" style="height: 20px">保存</el-button>
+                @click="handleDelete(scope.row)" style="height: 20px;color: green">保存</el-button>
             </template>>
           </el-table-column>
         </el-table>

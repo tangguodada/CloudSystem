@@ -327,7 +327,13 @@
             case "jpg":
               return 7;
               break;
+            case "JPG":
+              return 7;
+              break;
             case "png":
+              return 7;
+              break;
+            case "PNG":
               return 7;
               break;
             case "rar":

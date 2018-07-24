@@ -13,7 +13,7 @@
                    active-text-color="#ffffff"
                    style="border-bottom: none">
             <el-menu-item index="1" class="header-li" style="text-align: center" @click="jump('/home/disk/handlefile','1')">网盘</el-menu-item>
-            <el-menu-item index="2" class="header-li" style="text-align: center" @click="jump('/home/share','1')">分享</el-menu-item>
+            <el-menu-item index="2" class="header-li" style="text-align: center" @click="jump('/home/share','1')">会话</el-menu-item>
             <el-menu-item index="3" class="header-li" style="text-align: center" @click="jump('/home/moreinfo','1')">更多</el-menu-item>
           </el-menu>
         </div>

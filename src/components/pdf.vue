@@ -1,7 +1,7 @@
 <template>
     <div id="pdf">
       <!--<iframe id="pdfframe" width="100%" height="100%"></iframe>-->
-      <iframe :src="'/static/pdf/web/viewer.html?file=http://192.168.100.139:8080/auth/preview/'+id" width="100%" height="100%"></iframe>
+      <iframe :src="'/static/pdf/web/viewer.html?file=http://192.168.100.35:8080/auth/preview/'+id" width="100%" height="100%"></iframe>
       <!--<iframe :src="'/static/pdf/web/viewer.html?file=KPygAVpWeU.pdf'" width="100%" height="100%"></iframe>-->
     </div>
 </template>
