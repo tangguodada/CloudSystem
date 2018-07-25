@@ -121,7 +121,7 @@
                   <time class="time">{{tstime(item.shareTime)}}</time>
                 </div>
                 <!--<el-button type="text" class="button" @click="downloadfile(item.fileId)">&#12288;下载</el-button>-->
-                <el-button type="text" class="button"><a :href="'http://192.168.100.35:8080/auth/download/'+item.fileId" class="dl">&#12288;下载</a></el-button>
+                <el-button type="text" class="button"><a :href="'http://192.168.100.35:8080/auth/download/'+item.fileId" class="dl" download="">&#12288;下载</a></el-button>
                 <el-button type="text" class="button" @click="preview(item)" style="color: #007bff">&#12288;预览</el-button>
                 <el-button type="text" class="button" style="margin-left: 0px" @click="praise(item.id,item.uname)">{{item.star}}</el-button>
                 <i class="el-icon-erp-dianzan" v-show="!item.myStar" style="float: right;cursor: pointer;margin-top: 2px" @click="praise(item.id,item.uname)"></i>
@@ -244,6 +244,9 @@
             case "xls":
               return 4;
               break;
+            case "xlsx":
+              return 4;
+              break;
             case "pdf":
               return 5;
               break;
@@ -284,7 +287,7 @@
               name: "pdf"
             });
             window.open(routeData.href, '_blank');
-          } else if (result == 'png' || result == 'jpg'){
+          } else if (result == 'png' || result == 'jpg' || result == 'PNG' || result == 'JPG'){
             this.dialogimgsrc = val.fileUrl;
             this.dialogImgVisible = true;
           } else if (result == 'mp4') {

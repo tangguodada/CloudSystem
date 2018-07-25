@@ -20,6 +20,9 @@ const mutations={
   userNtf(state,isntf){
     state.isntf = isntf;
   },
+  userMessage_flag(state,isntf){
+    state.message_flag = isntf;
+  },
   userPercent(state,percent){
     state.storepercentage = percent;
   },
@@ -50,6 +53,7 @@ export default new Vuex.Store({
     username:'',
     userInfo:{},
     isntf:false,
+    message_flag:false,
     storepercentage:0,
     storesize:0
   },

@@ -55,17 +55,23 @@
                 title:'分享管理',
               },
               {
+                icon:'el-icon-time',
+                index:'ExceptionLog',
+                title:'Fdfs异常日志',
+              },
+              {
                 icon:'el-icon-bell',
                 index:'systemMessage',
                 title:'系统消息',
-              },{
+              },
+              {
                 icon:'el-icon-document',
                 index:'adminmessage',
                 title:'管理员信息',
               },{
                 icon:'el-icon-setting',
                 index:'login',
-                title:'退出',
+                title:'退出系统',
               },
             ]
 

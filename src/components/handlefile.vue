@@ -10,6 +10,7 @@
           <span style="position: absolute;left: 35px;top: 10px">新建文件夹</span>
         </el-button>
         <el-button class="se4" v-show="flag_deleteall" @click="deletechoosefile"><i class="el-icon-delete el-icon--left" style="position: relative;top: -2px;left: -5px"></i><span style="position: relative;top: -2px;left: -5px">删除</span></el-button>
+        <el-button class="se5" v-show="flag_deleteall" @click="downloadchoosefile"><i class="el-icon-download el-icon--left" style="position: relative;top: -2px;left: -5px"></i><span style="position: relative;top: -2px;left: -5px">下载</span></el-button>
       </div>
       <div style="float: right">
         <el-input
@@ -181,7 +182,7 @@
                   <use xlink:href="#el-icon-erp-file"></use>
                 </svg>
               <span @click="nextfilelist(scope.row)"
-                    style="cursor: pointer;position: absolute;top: 50%;transform: translateY(-60%);width:320px;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;overflow:hidden;"
+                    style="cursor: pointer;position: absolute;top: 50%;transform: translateY(-60%);width:45%;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;overflow:hidden;"
               >&#12288;{{ scope.row.name }}</span>
               <!--<span class="table-icon"><i class="el-icon-more" v-show=scope.row.isshow></i></span>-->
               <el-dropdown trigger="click" style="float: right" @visible-change="isDropdown">
@@ -193,7 +194,7 @@
                   <el-dropdown-item class="dropfont" @click.native="clickitem(scope.row,3)" >删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-                <a :href="'http://192.168.100.35:8080/auth/download/'+scope.row.id"><span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow><i class="el-icon-download"></i></span></a>
+                <a :href="'http://192.168.100.35:8080/auth/download/'+scope.row.id" download=""><span class="table-icon" style="margin-right: 10px" v-show="scope.row.isshow&&scope.row.type!=0"><i class="el-icon-download"></i></span></a>
                 <!--<span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow @click="downloadfile(scope.row.id)"><i class="el-icon-download"></i></span>-->
                 <span class="table-icon" style="margin-right: 10px" v-show=scope.row.isshow @click="sharefile(scope.row.id)"><i class="el-icon-share"></i></span>
               </div>
@@ -304,10 +305,20 @@
           friendid:'',
           dialogMusicVisible:false,
           dialogmusicsrc:'',
-          listfileid:[]
+          listfileid:[],
+          hasdir:false
         }
       },
       methods:{
+        downloadchoosefile(){
+          if (this.hasdir){
+            this.$message.error('文件夹不能下载');
+            return;
+          }
+          for (let i=0;i<this.listfileid.length;i++){
+            window.open('http://192.168.100.35:8080/auth/download/'+this.listfileid[i]);
+          }
+        },
         deletechoosefile(){
           this.$confirm('此操作将把文件移入回收站, 是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -513,10 +524,14 @@
           this.dropdownshow = val;
         },
         handleSelectionChange(val) { //多选框选中的行
+          this.hasdir = false;
           this.multipleSelection = val;
 //          console.log(this.multipleSelection);
           this.listfileid = [];
           for(let i=0;i<this.multipleSelection.length;i++){
+            if (this.multipleSelection[i].type == 0){
+              this.hasdir = true;
+            }
             this.listfileid.push(this.multipleSelection[i].id);
           }
           if (this.multipleSelection.length != 0){
@@ -690,6 +705,9 @@
               return 4;
               break;
             case "xls":
+              return 4;
+              break;
+            case "xlsx":
               return 4;
               break;
             case "pdf":
@@ -1342,7 +1360,7 @@
                   timeout: 5000, // todo 超时的话，只能认为该分片未上传过
                   dataType: "json",
                 }).then(function(data, textStatus, jqXHR) {
-                  console.log(data.data.result);
+//                  console.log(data.data.result);
                   if(data.data.result == 1) {
                     task.reject(); // 分片存在，则跳过上传
                   } else {
@@ -1899,7 +1917,13 @@
     width: 80px;
     position:absolute;
     top: 14px;
-    left: 280px;
+    left: 260px;
+  }
+  .se5{
+    width: 80px;
+    position:absolute;
+    top: 14px;
+    left: 340px;
   }
   .icon {
     width: 1em; height: 1em;

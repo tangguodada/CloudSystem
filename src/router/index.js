@@ -281,6 +281,14 @@ export const asyncRouterMap = [
         }
       },
       {
+        path:'/ExceptionLog',
+        component:resolve => require(['../components/adminpage/ExceptionLog.vue'],resolve),
+        meta:{
+          title:'Fdfs异常日志',
+          role:0
+        }
+      },
+      {
         path:'/adminmessage',
         component:resolve=>require(['../components/adminpage/adminmessage.vue'],resolve),
         meta:{

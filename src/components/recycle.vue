@@ -123,36 +123,77 @@
               console.log(error);
             })
         },
+        delf3(){
+          let that = this;
+          var defer2 = $.Deferred();
+          $.ajax({
+            type:"POST",
+            headers:{
+              'Authorization': sessionStorage.getItem('userToken'),
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+            async: true, // 同步
+            url:"http://192.168.100.35:8080/userfile/empty/file",
+            data:{
+              fileId:that.listfileid.join()
+            },
+            success:function (res) {
+              if (res.status){
+                that.$message({
+                  message: '彻底删除成功',
+                  type: 'success',
+                  center: true
+                });
+                defer2.resolve(res);
+                that.getfilelist();
+              } else {
+                defer2.resolve(res);
+                that.$message.error('删除失败');
+              }
+            }
+          })
+          return defer2;
+        },
         deletechoose(){
+          let that = this;
           this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$axios.post("/userfile/empty/file",{
-              fileId:this.listfileid.join()
-            },{
-              headers:{
-                'Authorization':sessionStorage.getItem('token'),
-                'Content-Type':'application/x-www-form-urlencoded'
-              }
+            const loading2 = this.$loading({
+              lock: true,
+              text: '正在删除',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            $.when(that.delf3()).done(function (data) {
+              loading2.close();
             })
-              .then(function (res) {
-//                console.log(res);
-                if (res.status){
-                  this.$message({
-                    message: '彻底删除成功',
-                    type: 'success',
-                    center: true
-                  });
-                  this.getfilelist();
-                } else {
-                  this.$message.error('删除失败');
-                }
-              }.bind(this))
-              .catch(function (error) {
-                console.log(error);
-              });
+//            this.$axios.post("/userfile/empty/file",{
+//              fileId:this.listfileid.join()
+//            },{
+//              headers:{
+//                'Authorization':sessionStorage.getItem('token'),
+//                'Content-Type':'application/x-www-form-urlencoded'
+//              }
+//            })
+//              .then(function (res) {
+////                console.log(res);
+//                if (res.status){
+//                  this.$message({
+//                    message: '彻底删除成功',
+//                    type: 'success',
+//                    center: true
+//                  });
+//                  this.getfilelist();
+//                } else {
+//                  this.$message.error('删除失败');
+//                }
+//              }.bind(this))
+//              .catch(function (error) {
+//                console.log(error);
+//              });
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -213,61 +254,154 @@
               console.log(error);
             })
         },
-        deleteall(){
-          this.$axios.delete("/userfile/empty/",{
+        delf2(){
+          let that = this;
+          var defer1 = $.Deferred();
+          $.ajax({
+            type:"DELETE",
             headers:{
-              'Authorization':sessionStorage.getItem('token'),
+              'Authorization': sessionStorage.getItem('userToken'),
               'Content-Type':'application/x-www-form-urlencoded'
-            }
-          })
-            .then(function (res) {
-//              console.log(res);
-              this.filelist = [];
-              if (res.data.status){
-                this.$message({
-                  message: '回收站清空成功',
+            },
+            async: true, // 同步
+            url:"http://192.168.100.35:8080/userfile/empty",
+            success:function (res) {
+              if (res.status){
+                that.$message({
+                  message: '彻底删除成功',
                   type: 'success',
                   center: true
                 });
+                defer1.resolve(res);
+                that.filelist=[];
               } else {
-                this.$message.error('回收站清空失败');
+                defer1.resolve(res);
+                that.$message.error('删除失败');
               }
-              // this.filelist = [].concat(res.data.data);
-            }.bind(this))
-            .catch(function (error) {
-              console.log(error);
+            }
+          })
+          return defer1;
+        },
+        deleteall(){
+          let that = this;
+          this.$confirm('此操作将永久清空回收站, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            const loading1 = this.$loading({
+              lock: true,
+              text: '正在删除',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            $.when(that.delf2()).done(function (res) {
+              loading1.close();
             })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除',
+              center: true
+            });
+          });
+//          this.$axios.delete("/userfile/empty/",{
+//            headers:{
+//              'Authorization':sessionStorage.getItem('token'),
+//              'Content-Type':'application/x-www-form-urlencoded'
+//            }
+//          })
+//            .then(function (res) {
+////              console.log(res);
+//              this.filelist = [];
+//              if (res.data.status){
+//                this.$message({
+//                  message: '回收站清空成功',
+//                  type: 'success',
+//                  center: true
+//                });
+//              } else {
+//                this.$message.error('回收站清空失败');
+//              }
+//              // this.filelist = [].concat(res.data.data);
+//            }.bind(this))
+//            .catch(function (error) {
+//              console.log(error);
+//            })
+        },
+        delf1(val){
+          let that = this;
+          var defer = $.Deferred();
+          $.ajax({
+            type:"POST",
+            headers:{
+              'Authorization': sessionStorage.getItem('userToken'),
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+            async: true, // 同步
+            url:"http://192.168.100.35:8080/userfile/empty/file",
+            data:{
+              fileId:val
+            },
+            success:function (res) {
+              console.log(res);
+              if (res.status){
+                that.$message({
+                  message: '彻底删除成功',
+                  type: 'success',
+                  center: true
+                });
+                defer.resolve(res);
+                that.getfilelist();
+              } else {
+                defer.resolve(res);
+                that.$message.error('删除失败');
+              }
+            }
+          })
+          return defer;
         },
         deletefile(val){
+          let that = this;
           this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$axios.post("/userfile/empty/file",{
-              fileId:val
-            },{
-              headers:{
-                'Authorization':sessionStorage.getItem('token'),
-                'Content-Type':'application/x-www-form-urlencoded'
-              }
+            const loading = this.$loading({
+              lock: true,
+              text: '正在删除',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            $.when(that.delf1(val)).done(function (data) {
+              loading.close()
             })
-              .then(function (res) {
-//                console.log(res);
-                if (res.status){
-                  this.$message({
-                    message: '彻底删除成功',
-                    type: 'success',
-                    center: true
-                  });
-                  this.getfilelist();
-                } else {
-                  this.$message.error('删除失败');
-                }
-              }.bind(this))
-              .catch(function (error) {
-                console.log(error);
-              });
+
+;//            this.$axios.post("/userfile/empty/file",{
+//              fileId:val
+//            },{
+//              headers:{
+//                'Authorization':sessionStorage.getItem('token'),
+//                'Content-Type':'application/x-www-form-urlencoded'
+//              }
+//            })
+//              .then(function (res) {
+////                console.log(res);
+//                if (res.status){
+//                  this.$message({
+//                    message: '彻底删除成功',
+//                    type: 'success',
+//                    center: true
+//                  });
+//                  this.getfilelist();
+//                } else {
+//                  this.$message.error('删除失败');
+//                }
+//              }.bind(this))
+//              .catch(function (error) {
+//                console.log(error);
+//              });
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -316,6 +450,9 @@
               return 4;
               break;
             case "xls":
+              return 4;
+              break;
+            case "xlsx":
               return 4;
               break;
             case "pdf":

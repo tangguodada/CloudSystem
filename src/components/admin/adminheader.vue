@@ -5,9 +5,18 @@
     <!--</div>-->
   <div class="logo" @click="collapseChange"><img src="/static/image/云存储-01.png" alt="" style="width: 180px;height:60px"></div>
   <div class="nav-right">
-    <span style="font-size: 14px;margin-right: 10px">欢迎登录</span>
-    <span style="margin-right: 20px">{{adminname}}</span>
-
+    <div style="float: left">
+      <span style="font-size: 14px;margin-right: 10px">欢迎登录</span>
+      <span style="margin-right: 20px">{{adminname}}</span>
+    </div>
+    <div class="btn-bell" style="float:left">
+      <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
+        <router-link to="/systemMessage">
+          <i class="el-icon-bell"></i>
+        </router-link>
+      </el-tooltip>
+      <span class="btn-bell-badge" v-show="message_flag"></span>
+    </div>
     <div class="modifymenu">
       <div class="showspace" style="float: right">
         <!--<img v-show=showHeadImg v-bind:src="this.$store.state.image" class="personHead"/>-->
@@ -22,6 +31,7 @@
         </ul>
       </div>
     </div>
+
   </div>
 </div>
 </template>
@@ -34,6 +44,7 @@
           return{
             collapse: false,
             adminname:sessionStorage.getItem('username'),
+            message:'',
           }
       },
       methods:{
@@ -45,7 +56,7 @@
           this.$router.push('/adminmessage');
         },
         logout(){
-          this.$confirm('此操作将退出该系统，是否继续?','提示',{
+          this.$confirm('此操作将退出改系统，是否继续?','提示',{
             confirmButtonText:'确定',
             cancleButtonText:'取消',
             type:'warning'
@@ -57,7 +68,22 @@
               message:'取消退出'
             });
           })
-        }
+        },
+        getUnreadNum(){
+          this.$axios.get('/fdfsException/unreadNum')
+            .then(function(res){
+              console.log(res);
+              this.message = res.data.data;
+              if(res.data.data != 0){
+                this.$store.commit('userMessage_flag',true);
+              }else{
+                this.$store.commit('userMessage_flag',false);
+              }
+            }.bind(this))
+            .catch(function(error){
+              console.log(error);
+            })
+        },
 
       },
       mounted(){
@@ -65,6 +91,12 @@
           if(document.body.clientWidth < 1000){
             this.collapseChange();
           }
+        this.getUnreadNum();
+      },
+      computed:{
+        message_flag(){
+          return this.$store.state.message_flag;
+        }
       }
     }
 </script>
@@ -97,15 +129,24 @@
     height: 80%;
     /*margin-right: 10px;*/
   }
-  .btn-bell{
-    clear: right;
-    float: right;
+  .btn-bell-badge{
+    position: absolute;
+    right: 115px;
+    top: 15px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #f56c6c;
+    color: #fff;
+  }
+  .btn-bell .el-icon-bell{
+    color: #fff;
   }
   .personHead{
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    margin-right: 30px;
+    margin-right: 18px;
   }
   .modifymenu {
     list-style: none;
@@ -118,7 +159,7 @@
     background: transparent;
     z-index: 999;
     top: 0;
-    margin-right: 30px;
+    margin-right: 18px;
   }
 
   .modifymenu p {

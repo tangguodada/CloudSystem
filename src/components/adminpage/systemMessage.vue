@@ -9,62 +9,27 @@
       <el-tabs v-model="message">
         <el-tab-pane :label="`未读消息(${unread.length})`" name="first">
           <el-table :data="unread" :show-header="false" style="width: 100%">
-            <el-table-column>
+            <el-table-column >
               <!--带数据的具名插槽-->
               <template slot-scope="scope">
-                <span class="message-title">{{scope.row.title}}</span>
+                <span>{{scope.row.info}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="date" width="180"></el-table-column>
-            <el-table-column width="120">
+            <el-table-column >
+              <!--带数据的具名插槽-->
               <template slot-scope="scope">
-                <el-button size="small" @click="handleRead(scope.$index)">标为已读</el-button>
+                <span >{{scope.row.position}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="150px">
+              <template slot-scope="scope">
+                <span >{{scope.row.createTime}}</span>
               </template>
             </el-table-column>
           </el-table>
           <div class="handle-row">
-            <el-button type="primary">全部标为已读</el-button>
+            <el-button type="primary" @click="readflag" :disabled="unread.length === 0">全部标为已读</el-button>
           </div>
-        </el-tab-pane>
-        <el-tab-pane :label="`已读消息(${read.length})`" name="second">
-          <template v-if="message === 'second'">
-            <el-table :data="read" :show-header="false" style="width: 100%">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <span class="message-title">{{scope.row.title}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="date" width="150"></el-table-column>
-              <el-table-column width="120">
-                <template slot-scope="scope">
-                  <el-button type="danger" @click="handleDel(scope.$index)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="handle-row">
-              <el-button type="danger">删除全部</el-button>
-            </div>
-          </template>
-        </el-tab-pane>
-        <el-tab-pane :label="`回收站(${recycle.length})`" name="third">
-          <template v-if="message === 'third'">
-            <el-table :data="recycle" :show-header="false" style="width: 100%">
-              <el-table-column>
-                <template slot-scope="scope">
-                  <span class="message-title">{{scope.row.title}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="date" width="150"></el-table-column>
-              <el-table-column width="120">
-                <template slot-scope="scope">
-                  <el-button @click="handleRestore(scope.$index)">还原</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="handle-row">
-              <el-button type="danger">清空回收站</el-button>
-            </div>
-          </template>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -78,37 +43,41 @@
         return {
           message: 'first',
           showHeader: false,
-          unread: [{
-            date: '2018-07-05 17:00:00',
-            title: '【系统通知】该系统将于今晚凌晨2点到5点进行升级维护',
-          },{
-            date: '2018-07-06 13:00:00',
-            title: '今晚12点整发大红包，先到先得',
-          },{
-            date:'2018-07-07 16:59:20',
-            title:'请将用户表中的信息筛选一下，删除僵尸用户'
-          }],
-          read: [{
-            date: '2018-07-05 20:00:00',
-            title: '【系统通知】该系统将于今晚凌晨2点到5点进行升级维护'
-          }, {
-              date: '2018-07-06 20:00:00',
-              title: '【系统通知】该系统将于今晚凌晨2点到5点进行升级维护'
-            }],
-          recycle: [{
-            date: '2018-07-06 17:00:00',
-            title: '【系统通知】该系统将于今晚凌晨2点到5点进行升级维护'
-          }]
+          unread: [],
+          read: [],
+          recycle: [],
         }
       },
       methods: {
-        //  标为已读按钮时间
-        handleRead(index) {
-          //增删数组中的元素 按数组下标 一个一个删除
-          const item = this.unread.splice(index, 1);
-//          console.log(item);
-          this.read = item.concat(this.read);
-        },
+
+          getUnreadMessage(){
+            this.$axios.get('/fdfsException/unreadMessage')
+              .then(function(res){
+                // console.log(res);
+                this.unread = res.data.data;
+                for(let i=0;i<this.unread.length;i++){
+                  let time = this.unread[i].createTime;
+                  let transformtime = new Date(time);
+                  let updatetime = transformtime.toLocaleDateString().replace(/\//g,"-")+" "+transformtime.toTimeString().substr(0,8);
+//                  console.log(updatetime);
+                  this.unread[i].createTime = updatetime;
+                }
+              }.bind(this))
+              .catch(function(error){
+                console.log(error);
+              })
+          },
+          readflag(){
+            this.$axios.put('/fdfsException/readAll')
+              .then(function(res){
+                console.log(res);
+                this.getUnreadMessage();
+                this.$store.commit('userMessage_flag',false);
+              }.bind(this))
+              .catch(function(error){
+                console.log(error);
+              })
+          },
         //删除按钮事件
         handleDel(index) {
           const item = this.read.splice(index, 1);
@@ -124,7 +93,10 @@
         unreadNum(){
           return this.unread.length;
         }
-      }
+      },
+      created(){
+          this.getUnreadMessage();
+      },
     }
 </script>
 

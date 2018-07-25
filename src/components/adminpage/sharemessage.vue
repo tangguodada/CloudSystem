@@ -81,10 +81,14 @@
       <img :src="dialogimgsrc" width="100%" height="300px"/>
     </el-dialog>
 
-    <el-dialog title="在线播放" :visible.sync="dialogVideoVisible" width="80%" @close="closevideo">
+    <el-dialog title="视频播放" :visible.sync="dialogVideoVisible" width="80%" @close="closevideo">
       <video id="movie" :src="dialogvideosrc" controls="controls" width="100%" height="500px">
         您的浏览器不支持 video 标签。
       </video>
+    </el-dialog>
+
+    <el-dialog title="音乐播放" :visible.sync="dialogMusicVisible" @close="closemusic">
+      <audio id="musica" :src="dialogmusicsrc" controls/>
     </el-dialog>
 
   </div>
@@ -105,11 +109,16 @@
             prohibitId:'',
             dialogimgsrc:'',
             dialogvideosrc:'',
+            dialogmusicsrc:'',
             dialogImgVisible:false,
-            dialogVideoVisible:false
+            dialogVideoVisible:false,
+            dialogMusicVisible:false
         }
       },
       methods:{
+        closemusic(){
+          $('#musica').get(0).pause();
+        },
         closevideo(){
           $('#movie').get(0).pause();
         },
@@ -161,12 +170,15 @@
               name: "pdf"
             });
             window.open(routeData.href, '_blank');
-          } else if (result == 'png' || result == 'jpg'){
+          } else if (result == 'png' || result == 'jpg' || result == 'PNG' || result == 'JPG'){
             this.dialogimgsrc = val.fileUrl;
             this.dialogImgVisible = true;
           } else if (result == 'mp4'){
             this.dialogvideosrc = val.fileUrl;
             this.dialogVideoVisible = true;
+          } else if (result == 'mp3'){
+            this.dialogmusicsrc = val.fileUrl;
+            this.dialogMusicVisible = true;
           } else {
             this.$message('抱歉，该文件暂不支持预览');
           }
