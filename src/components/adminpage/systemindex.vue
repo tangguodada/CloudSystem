@@ -212,7 +212,7 @@ import countTo from 'vue-count-to'
                   type: 'pie',
                   radius : '50%',
                   center: ['50%', '49%'],
-                  color:['#5C88FF','#C3B4DF'],
+                  color:['#C3B4DF','#e0db80'],
                   data:[
                     {value:'', name:'可用空间'},
                     {value:'', name:'已用空间'}

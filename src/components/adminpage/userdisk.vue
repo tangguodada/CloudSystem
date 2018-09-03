@@ -93,7 +93,8 @@
         handleCurrentChange(val) {
           // console.log(`当前页: ${val}`);
           this.currentPage1 = val;
-          this.getTableList();
+          this.getuserdisk();
+          this.getuserdiskProgress();
         },
         getuserdiskProgress(){
           this.$axios.post('/getuserdisk'+'?page='+this.currentPage1+'&page_size=8')
@@ -113,12 +114,12 @@
         getuserdisk(){
           this.$axios.post('/getuserdisk'+'?page='+this.currentPage1+'&page_size=8')
             .then(function(res){
-//              console.log(res);
+              console.log(res);
               this.userDiskList = res.data.data.records;
               this.pagetotal =  res.data.data.total;
 //             for(let i=0;i<this.userDiskList.length;i++){
 //                var size = (this.userDiskList[i].size).toFixed(2);
-//                this.userDiskList[i].size = size;
+//                this.userDiskList[i].size = size;n
 //              }
             }.bind(this))
             .catch(function(error){

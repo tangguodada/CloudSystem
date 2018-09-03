@@ -338,11 +338,11 @@
               console.log(res.data);
               if (res.data.status){
                 this.getsharelist();
-                this.$notify({
-                  title: '成功',
-                  message: '点赞成功',
-                  type: 'success'
-                });
+//                this.$notify({
+//                  title: '成功',
+//                  message: '点赞成功',
+//                  type: 'success'
+//                });
               } else {
                 this.$notify.error({
                   title: '错误',
@@ -364,11 +364,11 @@
               console.log(res.data);
               if (res.data.status){
                 this.getsharelist();
-                this.$notify({
-                  title: '成功',
-                  message: '取消点赞成功',
-                  type: 'success'
-                });
+//                this.$notify({
+//                  title: '成功',
+//                  message: '取消点赞成功',
+//                  type: 'success'
+//                });
               } else {
                 this.$notify.error({
                   title: '错误',
